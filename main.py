@@ -1,11 +1,12 @@
 import os
 
-from discord import Intents
+from discord import Intents, Activity, ActivityType
 from discord.ext.commands import Bot
 from discord_slash import SlashCommand
 from keep_alive import keep_alive
 
-client = Bot(command_prefix="!", intents=Intents.default())
+activity = Activity(type=ActivityType.watching, name="jdawg's server 😈")
+client = Bot(command_prefix="!", activity=activity, intents=Intents.default())
 slash = SlashCommand(client, sync_commands=True)
 
 
