@@ -9,8 +9,8 @@ from keep_alive import keep_alive
 from cogs.utils import maprotation as mapsutil
 from cogs.utils import constants as c
 
-activity = Activity(type=ActivityType.watching, name="jdawg's server 😈")
-client = Bot(command_prefix="!", activity=activity, intents=Intents.default())
+default_activity = Activity(type=ActivityType.watching, name="jdawg's server 😈")
+client = Bot(command_prefix="!", activity=default_activity, intents=Intents.default())
 slash = SlashCommand(client, sync_commands=True)
 
 
