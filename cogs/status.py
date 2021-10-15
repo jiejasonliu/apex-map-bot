@@ -18,7 +18,7 @@ class StatusTask(Cog):
 
     @tasks.loop(seconds=1.0)
     async def try_update_status(self):
-        # get last fetched map if cache is too old (sync purposes)
+        # get last fetched map unless cache is too old (sync purposes)
         if self.map_last_fetch and self.secs_last_fetch <= c.INVALIDATE_INT:
             currmap = self.map_last_fetch
         else:
@@ -28,7 +28,7 @@ class StatusTask(Cog):
             self.secs_last_fetch = 0
 
         # build bot status (with rate limit)
-        if self.secs_last_fetch % c.STATUS_INT == 0:
+        if self.secs_last_fetch % c.RATE_LIMIT_INT == 0:
             mapname = currmap.name
             secs_remaining = currmap.remaining.totalseconds - self.secs_last_fetch
             timeunit = mapsutil.TimeUnit.from_seconds(secs_remaining)
