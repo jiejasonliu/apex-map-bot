@@ -5,7 +5,6 @@ from discord.ext import tasks
 from discord.ext.commands import Bot
 from discord_slash import SlashCommand
 from keep_alive import keep_alive
-from replit import db
 
 from cogs.utils import maprotation as mapsutil
 from cogs.utils import constants as c
@@ -22,37 +21,33 @@ async def on_ready():
     try_update_status.start()
 
 
-# status update of current map
+# map status cache
 map_last_fetch = None
-
+secs_last_fetch = 0
 
 @tasks.loop(seconds=1.0)
 async def try_update_status():
-    global map_last_fetch
-
-    # initialize secs last fetch cache
-    if db.get('SECS_LAST_FETCH') == None:
-        db['SECS_LAST_FETCH'] = 0
+    global map_last_fetch, secs_last_fetch
 
     # get last fetched map if cache is too old (sync purposes)
-    if map_last_fetch and db.get('SECS_LAST_FETCH') <= c.INVALIDATE_INT:
+    if map_last_fetch and secs_last_fetch <= c.INVALIDATE_INT:
         currmap = map_last_fetch
     else:
         response = await mapsutil.getmaps(0)
         currmap = response[0]
         map_last_fetch = currmap
-        db['SECS_LAST_FETCH'] = 0
+        secs_last_fetch = 0
 
     # build bot status (with rate limit)
-    if db['SECS_LAST_FETCH'] % c.STATUS_INT == 0:
+    if secs_last_fetch % c.STATUS_INT == 0:
         mapname = currmap.name
-        secs_remaining = currmap.remaining.totalseconds - db['SECS_LAST_FETCH']
+        secs_remaining = currmap.remaining.totalseconds - secs_last_fetch
         timeunit = mapsutil.TimeUnit.from_seconds(secs_remaining)
         display = f"{mapname} ({timeunit.display_shorthand()})"
         await client.change_presence(activity=Game(name=display))
 
     # update seconds elapsed cache
-    db['SECS_LAST_FETCH'] = db['SECS_LAST_FETCH'] + 1
+    secs_last_fetch = secs_last_fetch + 1
 
 
 # load all cogs when bot starts
