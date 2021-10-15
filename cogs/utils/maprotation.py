@@ -20,7 +20,7 @@ class NextMap:
         self.name = name
         self.timestamp = timestamp
         self.duration = duration
-    
+
     def __repr__(self):
         now = datetime.now()
         future = datetime.fromtimestamp(self.timestamp)
@@ -32,15 +32,24 @@ class NextMap:
 
 
 class TimeUnit:
-    def __init__(self, h=0, m=0, s=0):
+    def __init__(self, h=0, m=0, s=0, totalseconds=None):
         self.h = h
         self.m = m
         self.s = s
+        self.totalseconds = totalseconds
 
     def from_seconds(totalseconds):
         m, s = divmod(totalseconds, 60)
         h, m = divmod(m, 60)
-        return TimeUnit(h=h, m=m, s=s)
+        return TimeUnit(h=h, m=m, s=s, totalseconds=totalseconds)
+
+    def display_shorthand(self):
+        minute = self.m if self.m >= 10 else f"0{self.m}"
+        second = self.s if self.s >= 10 else f"0{self.s}"
+        if self.h > 0:
+            return f"{self.h}:{minute}:{second}"
+        else:
+            return f"{minute}:{second}"
 
     def __repr__(self):
         minute = self.m if self.m >= 10 else f"0{self.m}"
@@ -70,13 +79,12 @@ async def getmaps(count=(c.DEFAULT_COUNT * len(c.APEX_MAPS)), filter=None):
 
         # generate Next Map objects
         nextmaps = []
-        for j in json_br['next']:
+        for j in json_br.get('next', []):
             mapname = j['map']
             if filter and mapname != filter:
                 continue
             nextmap = NextMap(mapname, j['timestamp'], j['duration'])
             nextmaps.append(nextmap)
-
         return (currmap, nextmaps)
 
     except Exception as e:
