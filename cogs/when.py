@@ -1,10 +1,10 @@
-
 from discord.ext.commands import Cog
 from discord_slash import cog_ext
 from discord_slash.utils.manage_commands import create_choice, create_option
 
 from .utils import maprotation as mapsutil
 from .utils import constants as c
+
 
 class WhenCommand(Cog):
     def __init__(self, client):

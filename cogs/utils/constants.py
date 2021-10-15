@@ -4,10 +4,11 @@ APEX_MAPS = {
     "Olympus": "Olympus 🏙️",
 }
 
+# number of queries in the API call (?next={...})
 DEFAULT_COUNT = 3
 
-# when to update the discord bot status
-STATUS_INT = 5 
+# when to update the discord bot status (per min)
+STATUS_INT = 5
 
-# when to invalidate status and pull from API again
-INVALIDATE_INT = 300
+# when to invalidate status and pull from API again (seconds)
+INVALIDATE_INT = 600
