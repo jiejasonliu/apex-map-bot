@@ -35,6 +35,7 @@ class StatusTask(Cog):
             # need to update, map changed since last fetch
             if secs_remaining <= 0:
                 self.map_last_fetch = None
+                return
 
             timeunit = mapsutil.TimeUnit.from_seconds(secs_remaining)
             display = f"{mapname} ({timeunit.display_shorthand()})"
