@@ -31,6 +31,11 @@ class StatusTask(Cog):
         if self.secs_last_fetch % c.RATE_LIMIT_INT == 0:
             mapname = currmap.name
             secs_remaining = currmap.remaining.totalseconds - self.secs_last_fetch
+
+            # need to update, map changed since last fetch
+            if secs_remaining <= 0:
+                self.map_last_fetch = None
+
             timeunit = mapsutil.TimeUnit.from_seconds(secs_remaining)
             display = f"{mapname} ({timeunit.display_shorthand()})"
             await self.client.change_presence(activity=Game(name=display))
