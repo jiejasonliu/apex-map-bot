@@ -6,7 +6,7 @@ app = Flask('')
 
 @app.route('/')
 def home():
-    return "Hello! I'm a Flask server."
+    return "Hello! I'm a Flask server. This is for keep-alive purposes!"
 
 
 def run():

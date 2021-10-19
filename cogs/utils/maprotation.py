@@ -58,7 +58,7 @@ class TimeUnit:
         if self.h > 0:
             return f"{self.h}h {minute}m {second}s"
         else:
-            return f"{minute}m {second}s"
+            return f"{self.m}m {second}s"
 
 
 # returns a tuple of (CurrentMap, NextMap[] <of length count>)
