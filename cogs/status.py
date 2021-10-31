@@ -29,6 +29,7 @@ class StatusTask(Cog):
                 self.secs_last_fetch = 0
             except Exception as err:
                 print(err)
+                self.secs_last_fetch += 1
                 return
 
         # build bot status (with rate limit)
