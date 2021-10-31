@@ -22,10 +22,14 @@ class StatusTask(Cog):
         if self.map_last_fetch and self.secs_last_fetch <= c.INVALIDATE_INT:
             currmap = self.map_last_fetch
         else:
-            response = await mapsutil.getmaps(0)
-            currmap = response[0]
-            self.map_last_fetch = currmap
-            self.secs_last_fetch = 0
+            try:
+                response = await mapsutil.getmaps(0)
+                currmap = response[0]
+                self.map_last_fetch = currmap
+                self.secs_last_fetch = 0
+            except Exception as err:
+                print(err)
+                return
 
         # build bot status (with rate limit)
         if self.secs_last_fetch % c.RATE_LIMIT_INT == 0:
