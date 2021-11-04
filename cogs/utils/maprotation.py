@@ -37,11 +37,19 @@ class TimeUnit:
         self.m = m
         self.s = s
         self.totalseconds = totalseconds
+        if self.totalseconds is None:
+            self.totalseconds = s + (60 * m) + (3600 * h)
 
+    # @factory
     def from_seconds(totalseconds):
         m, s = divmod(totalseconds, 60)
         h, m = divmod(m, 60)
         return TimeUnit(h=h, m=m, s=s, totalseconds=totalseconds)
+
+    def nearest_day(self):
+        days = self.totalseconds / c.DAY_UNIT  # 60*60*24
+        days = int(round(days))
+        return days
 
     def display_shorthand(self):
         minute = self.m if self.m >= 10 else f"0{self.m}"

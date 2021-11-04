@@ -36,14 +36,21 @@ class StatusTask(Cog):
         if self.secs_last_fetch % c.RATE_LIMIT_INT == 0:
             mapname = currmap.name
             secs_remaining = currmap.remaining.totalseconds - self.secs_last_fetch
+            timeunit = mapsutil.TimeUnit.from_seconds(secs_remaining)
 
             # need to update, map changed since last fetch
             if secs_remaining <= 0:
                 self.map_last_fetch = None
                 return
 
-            timeunit = mapsutil.TimeUnit.from_seconds(secs_remaining)
-            display = f"{mapname} ({timeunit.display_shorthand()})"
+            # display different string if time is greater than a day
+            if secs_remaining >= c.DAY_UNIT:
+                numdays = timeunit.nearest_day()
+                plural = "days" if numdays > 1 else "day"
+                display = f"{mapname} (~{numdays} {plural})"
+            else:
+                display = f"{mapname} ({timeunit.display_shorthand()})"
+                
             await self.client.change_presence(activity=Game(name=display))
 
         # update seconds elapsed cache
