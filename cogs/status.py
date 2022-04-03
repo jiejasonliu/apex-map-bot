@@ -18,8 +18,8 @@ class StatusTask(Cog):
 
     @tasks.loop(seconds=1.0)
     async def try_update_status(self):
-        # get last fetched map unless cache is too old (sync purposes)
-        if self.map_last_fetch and self.secs_last_fetch <= c.INVALIDATE_INT:
+        # get last fetched map unless refetch triggered / cache is too old
+        if self.map_last_fetch and self.secs_last_fetch <= c.FORCE_INVALIDATE_INT:
             currmap = self.map_last_fetch
         else:
             try:
@@ -40,7 +40,7 @@ class StatusTask(Cog):
 
             # need to update, map changed since last fetch
             if secs_remaining <= 0:
-                self.map_last_fetch = None
+                self.map_last_fetch = None # cause refetch
                 return
 
             # display different string if time is greater than a day
