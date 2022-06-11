@@ -1,7 +1,9 @@
+# (key): name in API --> (value): display name
 APEX_MAPS = {
     "World's Edge": "World's Edge 🗺️",
     "Kings Canyon": "Kings Canyon 🏜️",
     "Olympus": "Olympus 🏙️",
+    "Storm Point": "Storm Point ⛈️"
 }
 
 # number of queries in the API call (?next={...})

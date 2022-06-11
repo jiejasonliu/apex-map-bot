@@ -100,9 +100,17 @@ async def getmaps(count=(c.DEFAULT_COUNT * len(c.APEX_MAPS)), filter=None):
         return None
 
 
-async def stringifymaps(maps):
-    currmaptext = f"**Currently:** {repr(maps[0])}\n"
+# maps: (currmap: CurrentMap, nextmaps: NextMap[])
+async def stringifymaps(maps_tuple):
+    (currmap, nextmaps) = maps_tuple
+    currmaptext = f"**Currently:** {repr(currmap)}\n"
     nextmaptext = "**Upcoming:**\n"
-    for m in maps[1]:
+    
+    for m in nextmaps:
         nextmaptext += repr(m) + "\n"
+
+    # placeholder if it was empty
+    if not nextmaps:
+        nextmaptext += f"*(none upcoming)*"
+    
     return currmaptext + '\n' + nextmaptext
