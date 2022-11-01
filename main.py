@@ -26,4 +26,10 @@ for filename in os.listdir('./cogs'):
         print('Loaded cog:', filename)
 
 keep_alive()
-client.run(os.getenv('TOKEN'))
+
+try:
+    client.run(os.getenv('TOKEN'))
+except:
+    # replit container may have other bots and rate-limited by discord
+    # kill it so we get a new container and avoid an HTTP 429
+    os.system("kill 1")

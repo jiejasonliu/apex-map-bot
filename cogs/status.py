@@ -40,7 +40,7 @@ class StatusTask(Cog):
 
             # need to update, map changed since last fetch
             if secs_remaining <= 0:
-                self.map_last_fetch = None # cause refetch
+                self.map_last_fetch = None  # cause refetch
                 return
 
             # display different string if time is greater than a day
@@ -50,7 +50,7 @@ class StatusTask(Cog):
                 display = f"{mapname} (~{numdays} {plural})"
             else:
                 display = f"{mapname} ({timeunit.display_shorthand()})"
-                
+
             await self.client.change_presence(activity=Game(name=display))
 
         # update seconds elapsed cache

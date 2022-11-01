@@ -10,7 +10,7 @@ APEX_MAPS = {
 DEFAULT_COUNT = 3
 
 # when to update the discord bot status (how many seconds to wait per update)
-RATE_LIMIT_INT = 10
+RATE_LIMIT_INT = 5
 
 # when to force invalidate status and pull from API again (seconds)
 FORCE_INVALIDATE_INT = 1800
